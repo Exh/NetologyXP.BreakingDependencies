@@ -8,7 +8,7 @@ var items = {
     "amoxicillin": {price: 6.7, type: "Groceries"},
     "aspirin": {price: 0.2, type: "PrescriptionDrug"},
     "marijuana": {price: 1.4, type: "PrescriptionDrug"},
-    "hamburger": {price: 2, type: "PreparedFood"},
+    "hamburger": {price: 2.00, type: "PreparedFood"},
     "ceasar salad": {price: 4.2, type: "PreparedFood"},
 };
 
@@ -22,6 +22,7 @@ var itemTypes =
             "California": "",
             "Colorado": "",
             "Connecticut": ""
+	        //Tennessee
         },
         "PrescriptionDrug": {
             "Alabama": "",
@@ -31,6 +32,7 @@ var itemTypes =
             "California": "",
             "Colorado": "",
             "Connecticut": ""
+	        //Tennessee
         }
     };
 
@@ -43,6 +45,7 @@ function base(state) {
         "California": 0.075,
         "Colorado": 0.029,
         "Connecticut": 0.0635
+	    //Tennessee
     };
     return taxes[state];
 }
@@ -81,15 +84,20 @@ class TaxCalculator {
 
 function calculatePriceFor(state, item)
 {
-	var i = items[item];
-	return i.price + i.price * calc(state, i.type);
+	if (items[item].type === "PreparedFood") {
+		return ( 1 + base(state) ) * items[item].price;
+	}
+	else {
+		var i = items[item];
+		return i.price + i.price * calc(state, i.type);
+	}
 }
 
 
 
 //############################
 //Production - код:
-calculateTaxes();
+//calculateTaxes();
 
 //############################
 //Тесты:
@@ -103,7 +111,7 @@ var tests = [
 
 
 //Раскомментируйте следующую строчку для запуска тестов:
-//runAllTests (tests);
+runAllTests (tests);
 
 //############################
 //Код ниже этой строчки не надо менять для выполнения домашней работы
