@@ -78,6 +78,15 @@ class TaxCalculator {
     }
 }
 
+
+function calculatePriceFor(state, item)
+{
+	var i = items[item];
+	return i.price + i.price * calc(state, i.type);
+}
+
+
+
 //############################
 //Production - код:
 calculateTaxes();
@@ -91,6 +100,7 @@ var tests = [
     () => assertEquals(6.7 * (1 + 0.0), calculatePriceFor("California", "amoxicillin")),
     () => assertEquals(2 * (1 + 0.0635), calculatePriceFor("Connecticut", "hamburger")),
 ];
+
 
 //Раскомментируйте следующую строчку для запуска тестов:
 //runAllTests (tests);
