@@ -44,8 +44,9 @@ function base(state) {
         "Arkansas": 0.065,
         "California": 0.075,
         "Colorado": 0.029,
-        "Connecticut": 0.0635
-	    //Tennessee
+        "Connecticut": 0.0635,
+	   "Tennessee": 0.07,
+	    "Texas": 0.0625
     };
     return taxes[state];
 }
@@ -69,12 +70,7 @@ class TaxCalculator {
         for (var i = 0; i < ordersCount; i++) {
             var item = getSelectedItem();
             var result = null;
-            if (items[item].type === "PreparedFood") {
-                result = ( 1 + base(state) ) * items[item].price;
-            }
-            else {
-                result = calc(state, items[item].type) * items[item].price + items[item].price;
-            }
+            result = calculatePriceFor(state, item);
             console.log(`${item}: $${result.toFixed(2)}`);
         }
         console.log(`----Have a nice day!-----`);
@@ -84,11 +80,11 @@ class TaxCalculator {
 
 function calculatePriceFor(state, item)
 {
-	if (items[item].type === "PreparedFood") {
-		return ( 1 + base(state) ) * items[item].price;
+	var i = items[item];
+	if (i.type === "PreparedFood") {
+		return ( 1 + base(state) ) * i.price;
 	}
 	else {
-		var i = items[item];
 		return i.price + i.price * calc(state, i.type);
 	}
 }
@@ -97,7 +93,7 @@ function calculatePriceFor(state, item)
 
 //############################
 //Production - код:
-//calculateTaxes();
+calculateTaxes();
 
 //############################
 //Тесты:
