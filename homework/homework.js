@@ -21,8 +21,9 @@ var itemTypes =
             "Arkansas": 0.015,
             "California": "",
             "Colorado": "",
-            "Connecticut": ""
-	        //Tennessee
+            "Connecticut": "",
+            "Tennessee": 0.05,
+            "Texas": 0
         },
         "PrescriptionDrug": {
             "Alabama": "",
@@ -31,8 +32,9 @@ var itemTypes =
             "Arkansas": "",
             "California": "",
             "Colorado": "",
-            "Connecticut": ""
-	        //Tennessee
+            "Connecticut": "",
+	       "Tennessee": "",
+            "Texas": 0
         }
     };
 
@@ -46,7 +48,7 @@ function base(state) {
         "Colorado": 0.029,
         "Connecticut": 0.0635,
 	   "Tennessee": 0.07,
-	    "Texas": 0.0625
+	   "Texas": 0.0625
     };
     return taxes[state];
 }
@@ -103,6 +105,9 @@ var tests = [
     () => assertEquals(6.7 * (1 + 0.0), calculatePriceFor("Alaska", "amoxicillin")),
     () => assertEquals(6.7 * (1 + 0.0), calculatePriceFor("California", "amoxicillin")),
     () => assertEquals(2 * (1 + 0.0635), calculatePriceFor("Connecticut", "hamburger")),
+   // () => assertEquals(0.4, calculatePriceFor("Texas", "coca-cola")),
+
+
 ];
 
 
