@@ -12,6 +12,40 @@ var items = {
     "ceasar salad": {price: 4.2, type: "PreparedFood"},
 };
 
+function State(base, categories)
+{
+    this.base = base;
+    this.categories = categories;
+
+    this.getCategoryTax = function(title) {
+        return this.categories[title];
+    };
+
+    this.getBaseTax = function () {
+        return this.base;
+    };
+    
+    this.calculateTax = function (item) {
+	    var categoryTax = this.getCategoryTax(item.type);
+	    if (categoryTax === "") {
+		    return 0;
+	    }
+	    return this.base + categoryTax;
+    };
+
+    this.calculacePriceWithTax = function() {
+
+    }
+
+}
+
+var alaska = new State(0, {"Groceries": 0, "PrescriptionDrug": 0});
+var arizona = new State(0.056, {"Groceries": "", "PrescriptionDrug": ""});
+var california = new State(0.075, {"Groceries": "", "PrescriptionDrug": ""});
+var arkansas = new State(0.065, {"Groceries": 0.015, "PrescriptionDrug": ""});
+
+console.log(arkansas.calculateTax(items["milk"]));
+
 var itemCategories =
     {
         "Groceries": {
@@ -67,10 +101,10 @@ function calcPriceWithBaseTax(state, price) {
 	return (1 + base(state)) * price;
 }
 
-function calcPreparedFoodPrice(state, price)
-{
+function calcPreparedFoodPrice(state, price) {
 	return calcPriceWithBaseTax(state, price)
 }
+
 class TaxCalculator {
     // У этой функции нелья менять интерфейс
     // Но можно менять содержимое
