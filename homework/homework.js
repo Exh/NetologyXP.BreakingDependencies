@@ -63,14 +63,10 @@ function calc(state, itemType) {
     return base(state) + itemTypeTaxModifier[state];
 }
 
-function calcBaseTax(state, item) {
-	return base(state) * item.price;
+function calcPriceWithBaseTax(state, item) {
+	return (1 + base(state)) * item.price;
 }
 
-// function calcCategoryTax(state, item, categories)
-// {
-//
-// }
 
 class TaxCalculator {
     // У этой функции нелья менять интерфейс
