@@ -12,7 +12,7 @@ var items = {
     "ceasar salad": {price: 4.2, type: "PreparedFood"},
 };
 
-var itemTypes =
+var itemCategories =
     {
         "Groceries": {
             "Alabama": 0,
@@ -56,7 +56,7 @@ function base(state) {
 
 function calc(state, itemType) {
 
-    var itemTypeTaxModifier = itemTypes[itemType];
+    var itemTypeTaxModifier = itemCategories[itemType];
     if (itemTypeTaxModifier[state] === "") {
         return 0;
     }
@@ -64,8 +64,13 @@ function calc(state, itemType) {
 }
 
 function calcBaseTax(state, item) {
-
+	return base(state) * item.price;
 }
+
+// function calcCategoryTax(state, item, categories)
+// {
+//
+// }
 
 class TaxCalculator {
     // У этой функции нелья менять интерфейс
