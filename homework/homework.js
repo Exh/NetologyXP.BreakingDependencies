@@ -35,8 +35,15 @@ function State(base, categories)
 
     this.calculacePriceWithTax = function() {
 
-    }
+    };
 
+    this.calcPriceWithBaseTax = function(price) {
+		return (1 + this.base) * price;
+	};
+
+	this.calcPreparedFoodPrice = function(price) {
+		return this.calcPriceWithBaseTax(price);
+	};
 }
 
 var alaska = new State(0, {"Groceries": 0, "PrescriptionDrug": 0});
@@ -45,6 +52,7 @@ var california = new State(0.075, {"Groceries": "", "PrescriptionDrug": ""});
 var arkansas = new State(0.065, {"Groceries": 0.015, "PrescriptionDrug": ""});
 
 console.log(arkansas.calculateTax(items["milk"]));
+console.log(arkansas.calcPreparedFoodPrice(2.0));
 
 var itemCategories =
     {
