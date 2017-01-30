@@ -36,6 +36,7 @@ var itemTypes =
 	       "Tennessee": "",
             "Texas": 0
         }
+
     };
 
 function base(state) {
@@ -60,6 +61,10 @@ function calc(state, itemType) {
         return 0;
     }
     return base(state) + itemTypeTaxModifier[state];
+}
+
+function calcBaseTax(state, item) {
+
 }
 
 class TaxCalculator {
@@ -90,7 +95,6 @@ function calculatePriceFor(state, item)
 		return i.price + i.price * calc(state, i.type);
 	}
 }
-
 
 
 //############################
