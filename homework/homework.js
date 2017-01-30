@@ -63,11 +63,14 @@ function calc(state, itemType) {
     return base(state) + itemTypeTaxModifier[state];
 }
 
-function calcPriceWithBaseTax(state, item) {
-	return (1 + base(state)) * item.price;
+function calcPriceWithBaseTax(state, price) {
+	return (1 + base(state)) * price;
 }
 
-
+function calcPreparedFoodPrice(state, price)
+{
+	return calcPriceWithBaseTax(state, price)
+}
 class TaxCalculator {
     // У этой функции нелья менять интерфейс
     // Но можно менять содержимое
@@ -90,7 +93,8 @@ function calculatePriceFor(state, item)
 {
 	var i = items[item];
 	if (i.type === "PreparedFood") {
-		return ( 1 + base(state) ) * i.price;
+		// return ( 1 + base(state) ) * i.price;
+          return calcPreparedFoodPrice(state, i.price)
 	}
 	else {
 		return i.price + i.price * calc(state, i.type);
