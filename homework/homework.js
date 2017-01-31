@@ -17,7 +17,6 @@ function State(base, categories) {
 	this.categories = categories;
 
 	this.getCategoryTax = function (title) {
-		console.log("getCategoryTax: " + title);
 		return this.categories[title];
 	};
 
@@ -34,11 +33,11 @@ function State(base, categories) {
 	};
 
 	this.calculatePriceWithTax = function (item) {
-		console.log("calculacePriceWithTax: " + item.type);
 		if (item.type === "PreparedFood") {
 			return this.calcPreparedFoodPrice(item.price);
 		}
 		else {
+			console.log(item.price + " " + this.calculateTax(item.type));
 			return item.price + item.price * this.calculateTax(item.type);
 		}
 	};
@@ -52,73 +51,23 @@ function State(base, categories) {
 	};
 };
 
-var alaska = new State(0, {"Groceries": 0, "PrescriptionDrug": 0});
-var arizona = new State(0.056, {"Groceries": "", "PrescriptionDrug": ""});
-var california = new State(0.075, {"Groceries": "", "PrescriptionDrug": ""});
-var arkansas = new State(0.065, {"Groceries": 0.015, "PrescriptionDrug": ""});
-8
-console.log("Arizona: " + arizona.calculatePriceWithTax(items["hamburger"]));
-console.log("Arizona: " + arizona.calculatePriceWithTax(items["marijuana"]));
-console.log("California: " + california.calculatePriceWithTax(items["coca-cola"]));
-console.log("California: " + california.calculatePriceWithTax(items["hamburger"]));
 
-var itemCategories =
-	{
-		"Groceries": {
-			"Alabama": 0,
-			"Alaska": 0,
-			"Arizona": "",
-			"Arkansas": 0.015,
-			"California": "",
-			"Colorado": "",
-			"Connecticut": "",
-			"Tennessee": 0.05,
-			"Texas": 0
-		},
-		"PrescriptionDrug": {
-			"Alabama": "",
-			"Alaska": 0,
-			"Arizona": "",
-			"Arkansas": "",
-			"California": "",
-			"Colorado": "",
-			"Connecticut": "",
-			"Tennessee": "",
-			"Texas": 0
-		}
+var states = {
+	"Alabama": new State(0.04, {"Groceries": 0, "PrescriptionDrug": ""}),
+	"Alaska": new State(0, {"Groceries": 0, "PrescriptionDrug": 0}),
+	"Arizona": new State(0.056, {"Groceries": "", "PrescriptionDrug": ""}),
+	"Arkansas": new State(0.065, {"Groceries": 0.015, "PrescriptionDrug": ""}),
+	"California": new State(0.075, {"Groceries": "", "PrescriptionDrug": ""}),
+	"Colorado": new State(0.029, {"Groceries": "", "PrescriptionDrug": ""}),
+	"Connecticut": new State(0.0635, {"Groceries": "", "PrescriptionDrug": ""}),
+	"Tennessee": new State(0.07, {"Groceries": 0.05, "PrescriptionDrug": ""}),
+	"Texas": new State(0.0625, {"Groceries": 0, "PrescriptionDrug": 0})
+};
 
-	};
-
-function base(state) {
-	var taxes = {
-		"Alabama": 0.04,
-		"Alaska": 0,
-		"Arizona": 0.056,
-		"Arkansas": 0.065,
-		"California": 0.075,
-		"Colorado": 0.029,
-		"Connecticut": 0.0635,
-		"Tennessee": 0.07,
-		"Texas": 0.0625
-	};
-	return taxes[state];
-}
-
-function calc(state, itemType) {
-
-	var itemTypeTaxModifier = itemCategories[itemType];
-	if (itemTypeTaxModifier[state] === "") {
-		return 0;
-	}
-	return base(state) + itemTypeTaxModifier[state];
-}
-
-function calcPriceWithBaseTax(state, price) {
-	return (1 + base(state)) * price;
-}
-
-function calcPreparedFoodPrice(state, price) {
-	return calcPriceWithBaseTax(state, price)
+function calculatePriceFor(state, item) {
+	var s = states[state];
+	var i = items[item];
+	return s.calculatePriceWithTax(i);
 }
 
 class TaxCalculator {
@@ -130,6 +79,7 @@ class TaxCalculator {
 		console.log(`----------${state}-----------`);
 		for (var i = 0; i < ordersCount; i++) {
 			var item = getSelectedItem();
+			console.log("Item: " + item);
 			var result = null;
 			result = calculatePriceFor(state, item);
 			console.log(`${item}: $${result.toFixed(2)}`);
@@ -138,16 +88,6 @@ class TaxCalculator {
 	}
 }
 
-function calculatePriceFor(state, item) {
-	var i = items[item];
-	if (i.type === "PreparedFood") {
-		// return ( 1 + base(state) ) * i.price;
-		return calcPreparedFoodPrice(state, i.price)
-	}
-	else {
-		return i.price + i.price * calc(state, i.type);
-	}
-}
 
 
 //############################
@@ -162,12 +102,12 @@ var tests = [
 	() => assertEquals(6.7 * (1 + 0.0), calculatePriceFor("Alaska", "amoxicillin")),
 	() => assertEquals(6.7 * (1 + 0.0), calculatePriceFor("California", "amoxicillin")),
 	() => assertEquals(2 * (1 + 0.0635), calculatePriceFor("Connecticut", "hamburger")),
-	// () => assertEquals(0.4, calculatePriceFor("Texas", "coca-cola")),
+	() => assertEquals(0.4 * (1 + 0.0625), calculatePriceFor("Texas", "coca-cola")),
 ];
 
 
 //Раскомментируйте следующую строчку для запуска тестов:
-	runAllTests (tests);
+runAllTests (tests);
 
 //############################
 //Код ниже этой строчки не надо менять для выполнения домашней работы
